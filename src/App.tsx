@@ -5,11 +5,12 @@ import {Paths} from "./utils/paths.ts";
 import ShoppingCart from "./components/ShoppingCart.tsx";
 import Customers from "./components/Customers.tsx";
 import Orders from "./components/Orders.tsx";
-import Products from "./components/Products.tsx";
+//import Products from "./components/Products.tsx";
 import Bread from "./components/Bread.tsx";
 import Dairy from "./components/Dairy.tsx";
 import Layout from "./components/navigation/Layout.tsx";
 import ProductLayout from "./components/navigation/ProductLayout.tsx";
+import Error404Page from "./components/servicePages/Error404Page.tsx";
 
 function App() {
 
@@ -24,8 +25,8 @@ function App() {
                     <Route path={Paths.BREAD} element={<Bread/>}/>
                     <Route path={Paths.DAIRY} element={<Dairy/>}/>
                 </Route>
-
             </Route>
+            <Route path={'*'} element={<Error404Page/>}/>
         </Routes>
     )
 }
