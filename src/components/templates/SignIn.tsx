@@ -59,7 +59,7 @@ const SignInContainer = styled(Stack)(({ theme }) => ({
   },
 }));
 type Props = {
-  func: (data:LoginData) => void;
+  func: (data?:LoginData) => void;
 }
 export default function SignIn(props:Props) {
   const [emailError, setEmailError] = React.useState(false);
@@ -180,7 +180,7 @@ export default function SignIn(props:Props) {
             <Button
               fullWidth
               variant="outlined"
-              onClick={() => alert('Sign in with Google')}
+              onClick={() => props.func()}
               startIcon={<GoogleIcon />}
             >
               Sign in with Google
