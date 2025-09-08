@@ -17,6 +17,7 @@ import Logout from "./components/servicePages/Logout.tsx";
 import Login from "./components/servicePages/Login.tsx";
 import {type NavItemType, Roles} from "./utils/app-types.ts";
 import {useAppSelector} from "./redux/hooks.ts";
+import Registration from "./components/servicePages/Registration.tsx";
 
 function App() {
     const {authUser} = useAppSelector(state => state.auth);
@@ -26,7 +27,8 @@ function App() {
             item.role === Roles.ALL ||
                 item.role === Roles.USER && authUser ||
                 item.role === Roles.ADMIN && authUser && authUser.includes('admin') ||
-                item.role === Roles.NO_AUTH && !authUser
+                item.role === Roles.NO_AUTH && !authUser||
+                item.role === Roles.USER_ONLY && authUser && !authUser.includes('admin')
         )
     }
 
@@ -50,6 +52,7 @@ function App() {
                 </Route>
                 <Route path={Paths.LOGOUT} element={<Logout/>}/>
                 <Route path={Paths.LOGIN} element={<Login/>}/>
+                <Route path={Paths.REGISTRATION} element={<Registration/>}/>
             </Route>
             <Route path={'*'} element={<Error404Page/>}/>
         </Routes>
