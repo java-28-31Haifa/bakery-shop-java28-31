@@ -1,8 +1,9 @@
 import {type FC, useState} from 'react';
 import type {NavItemType} from "../../utils/app-types.ts";
-import {AppBar, Avatar, Box, Tab, Tabs, Toolbar} from "@mui/material";
+import {AppBar, Avatar, Box, Chip, Tab, Tabs, Toolbar} from "@mui/material";
 import {Link, Outlet} from "react-router-dom";
 import {useAppSelector} from "../../redux/hooks.ts";
+import * as React from "react";
 
 type Props = {
     items: NavItemType[]
@@ -25,7 +26,12 @@ const NavigationDesktop: FC<Props> = ({items}) => {
                             <Tab key={item.route} component={Link} to={item.route} label={item.itemName}/>
                         )}
                     </Tabs>
-                    {authUser&&<Avatar>{authUser.substring(0, 1)}</Avatar>}
+                    {authUser&&<Chip
+                    avatar={<Avatar sx={{ bgcolor: "lightblue" }}>{authUser?.name.toUpperCase().substring(0, 1)}</Avatar>}
+                    label={authUser?.email || authUser?.name}
+                    variant={"outlined"}
+                    ></Chip>
+                    }
                 </Toolbar>
             </AppBar>
 

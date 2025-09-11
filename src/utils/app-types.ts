@@ -34,3 +34,8 @@ export type ProductType = {
 export type Category = {
     categoryName:string
 }
+
+export type AuthUserType = {
+    name:string,
+    email: string
+}
