@@ -1,10 +1,11 @@
 import {createSlice} from "@reduxjs/toolkit";
+import type {AuthUserType} from "../../utils/app-types.ts";
+
+const initialState:{authUser: AuthUserType|null} = {authUser: null}
 
 const authSlice = createSlice({
     name: 'auth',
-    initialState: {
-        authUser:null
-    },
+    initialState,
     reducers: {
         setAuthUser: (state, action) => {
             state.authUser = {...action.payload}
