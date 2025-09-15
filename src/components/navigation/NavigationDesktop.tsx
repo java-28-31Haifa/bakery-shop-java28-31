@@ -27,7 +27,7 @@ const NavigationDesktop: FC<Props> = ({items}) => {
                         )}
                     </Tabs>
                     {authUser&&<Chip
-                    avatar={<Avatar sx={{ bgcolor: "lightblue" }}>{authUser?.name.toUpperCase().substring(0, 1)}</Avatar>}
+                    avatar={<Avatar sx={{ bgcolor: "lightblue" }}>{authUser.email.toUpperCase().substring(0, 1)}</Avatar>}
                     label={authUser?.email || authUser?.name}
                     variant={"outlined"}
                     ></Chip>

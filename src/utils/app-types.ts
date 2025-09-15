@@ -39,3 +39,8 @@ export type AuthUserType = {
     name:string,
     email: string
 }
+
+export type ShopCartProdType = {
+    prodId: string,
+    count: number
+}

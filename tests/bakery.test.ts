@@ -9,8 +9,7 @@ describe('BakeryShop tests', () => {
     afterAll(async () => {
         await deleteApp(app);
     });
-
-    test('Test:firebaseDbService.isCategoryExists', () => {
+    it('Test:firebaseDbService.isCategoryExists', () => {
         expect(isCategoryExists('bread')).resolves.toBeTruthy();
         expect(isCategoryExists('milk')).resolves.toBeFalsy();
     })
