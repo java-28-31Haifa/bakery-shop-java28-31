@@ -21,8 +21,10 @@ export const addProductUnitToCart = async(collName: string, prodId:string) => {
     const temp = await getDoc(ref);
     const prodData = temp.data() as ShopCartProdType;
     if(prodData)
-        count = prodData.count
-    await addProductToCart(collName, {prodId, count: count + 1})
+        count = prodData.count;
+    count++;
+    await addProductToCart(collName, {prodId, count});
+    return count;
 }
 export const removeProductUnitFromCart = async (collName:string, prodId: string) => {
     const ref = doc(db, collName, prodId);
