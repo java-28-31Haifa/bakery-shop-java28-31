@@ -1,7 +1,9 @@
 import {Avatar, Box} from "@mui/material";
-import {DataGrid, type GridColDef} from "@mui/x-data-grid";
+import {DataGrid, GridActionsCellItem, type GridColDef} from "@mui/x-data-grid";
 import {useAppSelector} from "../../redux/hooks.ts";
 import type {ProductType} from "../../utils/app-types.ts";
+import {TrashBasketIcon} from "../templates/CustomIcons.tsx";
+import {removeProduct} from "../../firebase/firebaseDBService.ts";
 
 
 const BreadProductAdmin = () => {
@@ -17,6 +19,15 @@ const BreadProductAdmin = () => {
         {field: 'img',  flex: 0.4, headerName: "", renderCell:(params) =>
                 <Avatar src={'/images/' + params.value}/>
             },
+        {field:'actions', type: 'actions', getActions: (params) =>
+            [
+                <GridActionsCellItem label={'remove'} icon={<TrashBasketIcon/>}
+                onClick={async () => {
+                    await removeProduct(params.id as string)
+                }}
+                />
+            ]
+            }
     ]
     return (
         <Box sx={{width: "90vw", height: "80vh", margin: "20px auto"}}>

@@ -12,7 +12,7 @@ export const navItems: NavItemType[] = [
 ]
 
 export const productItems: NavItemType[] = [
-    {route: Paths.DAIRY, itemName: "Dairy"},
     {route: Paths.BREAD, itemName: "Bread"},
+    {route: Paths.DAIRY, itemName: "Dairy"},
     {route: Paths.HOME, itemName: "Back to main menu"},
 ]

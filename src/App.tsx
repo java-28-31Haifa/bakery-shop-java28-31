@@ -15,12 +15,15 @@ import NavigationDesktop from "./components/navigation/NavigationDesktop.tsx";
 import {navItems, productItems} from "./utils/constants.ts";
 import Logout from "./components/servicePages/Logout.tsx";
 import Login from "./components/servicePages/Login.tsx";
-import {type NavItemType, type ProductType, Roles} from "./utils/app-types.ts";
+import {type NavItemType, type ProductType, Roles, type ShopCartProdType} from "./utils/app-types.ts";
 import {useAppDispatch, useAppSelector} from "./redux/hooks.ts";
 import Registration from "./components/servicePages/Registration.tsx";
 import {useEffect} from "react";
-import {getProductsRxJs} from "./firebase/firebaseDBService.ts";
+//import {getProductsRxJs} from "./firebase/firebaseDBService.ts";
 import {prodsUpd} from "./redux/slices/productSlice.ts";
+import {getAnyProductsCollObservable} from "./firebase/firebaseCartService.ts";
+import {resetCart, setCart} from "./redux/slices/cartSlice.ts";
+import Products from "./components/Products.tsx";
 //import {useProductsFirebase} from "./utils/tools.ts";
 
 function App() {
@@ -40,16 +43,36 @@ function App() {
     //useProductsFirebase();
     //======================3 variant=======================
         useEffect(() => {
-        const subscribtion = getProductsRxJs().subscribe({
-            next: (prods: ProductType[]) => {
+        //const subscribtion = getProductsRxJs().subscribe({
+        const subscription = getAnyProductsCollObservable<ProductType>('product_collection').subscribe({
+            next: (prods) => {
                 dispatch(prodsUpd(prods))
             },
             error: (err) => {
                 console.log(err)
             }
         })
-        return () => subscribtion.unsubscribe()
+        return () => subscription.unsubscribe()
     }, []);
+
+    useEffect(() => {
+        if(!authUser ||  authUser.email.includes('admin'))
+            dispatch(resetCart());
+        else {
+            const subscription =
+                getAnyProductsCollObservable<ShopCartProdType>(`${authUser.email}_cart_collection`)
+                    .subscribe({
+                        next: (prods) => {
+                            dispatch(setCart(prods))
+                        },
+
+                        error: (err) => {
+                            console.log(err)
+                        }
+                    })
+            return ()=> subscription.unsubscribe()
+        }
+    }, [authUser]);
 
     function predicate(item: NavItemType) {
         return (
@@ -76,7 +99,9 @@ function App() {
                 {/*<Route path={Paths.PRODUCTS} element={<ProductLayout/>}>*/}
                 {/*<Route path={Paths.PRODUCTS} element={<Navigation items={navItems}/>}>*/}
                 <Route path={Paths.PRODUCTS} element={<NavigationDesktop items={productItems}/>}>
+                    <Route index element={<Products/>}/>
                     <Route path={Paths.BREAD} element={<Bread/>}/>
+                    {/*<Route index element={<Bread/>}/>*/}
                     <Route path={Paths.DAIRY} element={<Dairy/>}/>
                 </Route>
                 <Route path={Paths.LOGOUT} element={<Logout/>}/>

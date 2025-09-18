@@ -10,11 +10,17 @@ import {useNavigate} from "react-router-dom";
 const BreadProductUser = () => {
     const {currProds} = useAppSelector(state => state.products);
     const {authUser} = useAppSelector(state => state.auth);
+    const {cartProducts} = useAppSelector(state => state.cart)
     const navigate = useNavigate();
 
+    const getProdCount = (prod:ProductType) =>
+    cartProducts.find(p => p.prodId === prod.id)?.count || 0;
+
+
+    const counts:number[] = currProds.map(getProdCount);
     return (
         <Grid container spacing={2} sx={{margin:"50px auto"}}>
-            {currProds.map((item:ProductType) =>
+            {currProds.map((item:ProductType, index) =>
                 <Grid key={item.id} size={{xs:12, sm:6, md:4, lg:3}}>
                     <Card sx={{ maxWidth: 345 }}>
                         <CardMedia
@@ -41,8 +47,8 @@ const BreadProductUser = () => {
                                 }
                             }}
                             >+</Button>
-                            <Typography sx={{fontSize:"1.2rem"}}>0</Typography>
-                            <Button size="small" variant={"outlined"} sx={{fontSize:"1.2rem"}} disabled={!authUser}
+                            <Typography sx={{fontSize:"1.2rem"}}>{counts[index]}</Typography>
+                            <Button size="small" variant={"outlined"} sx={{fontSize:"1.2rem"}} disabled={!counts[index]}
                                     onClick={async () => {
                                     try {
                                             await removeProductUnitFromCart(`${authUser!.email}_cart_collection`, item.id!)

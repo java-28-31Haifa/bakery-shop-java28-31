@@ -1,6 +1,8 @@
 import type {ShopCartProdType} from "../utils/app-types.ts";
-import {doc, setDoc, getDoc, deleteDoc, query, onSnapshot} from 'firebase/firestore'
+import {doc, setDoc, getDoc, deleteDoc, query, onSnapshot, collection} from 'firebase/firestore'
 import {db} from "../configurations/firebase-config.ts";
+import {Observable, Subscriber} from "rxjs";
+//import {prodColl} from "./firebaseDBService.ts";
 
 export const addProductToCart = async(collName:string, product: ShopCartProdType) => {
     const ref = doc(db, collName, product.prodId);
@@ -36,4 +38,19 @@ export const removeProductUnitFromCart = async (collName:string, prodId: string)
         await removeProductFromCart(collName, prodId);
     }
     else await addProductToCart(collName, {prodId, count: count -1})
+}
+
+export const getAnyProductsCollObservable = <T>(collName:string) => {
+    return new Observable((subscriber: Subscriber<T[]>) => {
+        const q = query(collection(db, collName));
+        const unsubscribe = onSnapshot(q, (snapshot) => {
+                const prods =
+                    snapshot.docs.map(doc =>
+                        ({...doc.data()} as T))
+                subscriber.next(prods)
+            },
+            (err) => subscriber.error(err)
+        );
+        return () => unsubscribe()
+    })
 }

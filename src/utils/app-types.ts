@@ -44,3 +44,5 @@ export type ShopCartProdType = {
     prodId: string,
     count: number
 }
+
+export type ShopCartProdViewType = ProductType & {quantity:number, amount: number}

@@ -1,5 +1,15 @@
-import * as React from 'react';
+
 import SvgIcon from '@mui/material/SvgIcon';
+
+export function TrashBasketIcon(){
+  return (
+      <img src={'/images/trash-can.png'} style={{
+        width: '20px',
+        height: '20px',
+        opacity: '0.6'
+      }}/>
+  )
+}
 
 export function SitemarkIcon() {
   return (
